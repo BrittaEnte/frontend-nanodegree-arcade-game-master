@@ -1,11 +1,11 @@
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(x,y,speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    this.x = -1;
-    this.y = 1;
+    this.x = x;
+    this.y = y;
     
-    this.speed = Math.floor((Math.random()*3))
+    this.speed = Math.floor((Math.random()*70)); 
 
 
     // The image/sprite for our enemies, this uses
@@ -18,7 +18,21 @@ var Enemy = function() {
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
-    // all computers.
+    // all computers.    
+  
+    this.x += this.speed * dt; 
+
+  // this makes sure that if the enemy leaves the canvas it is reset. 
+
+    if (this.x > 505){
+      this.x = 2;
+    }
+
+// collision with player, player goes back. 
+    if (this.x===player.x){
+      player.x = 200;
+      player.y = 380; 
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -30,11 +44,70 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
+var Player = function() {
+  this.x = 200;
+  this.y = 380; 
+  this.sprite = "images/char-boy.png";
+  
+};
+
+Player.prototype.render =function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}; 
+
+Player.prototype.update = function(dt) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.    
+  
+    this.x += this.speed * dt; 
+};
+
+    // defines how player moves around the grid
+Player.prototype.handleInput = function(allowedKeys) {
+
+  switch (allowedKeys) {
+
+  // player arrow left
+  case 'left':
+   if (this.x > 0) {
+      this.x +=100;
+   }
+   break;
+  // player arrow up
+  case 'down':
+   if (this.y > 0) {
+      this.y -=100;
+   }
+   break;
+  // player arrow right
+  case 'right':
+   if (this.x < 500) {
+      this.x -=100;
+   }
+   break;
+  // player arrow down
+  case 'up':
+   if (this.y < 600) {
+      this.y +=100;
+   }
+   break;
+
+  default:
+    alert("use the keys, right,left,up and down");
+  }
+  if (this.y > 550){
+    player();
+  }
+
+};
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
+var allEnemies = [new Enemy(0, 60), new Enemy(0, 145), new Enemy(0, 230)];
+var player = new Player();
 
 
 // This listens for key presses and sends the keys to your
@@ -49,3 +122,5 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+
