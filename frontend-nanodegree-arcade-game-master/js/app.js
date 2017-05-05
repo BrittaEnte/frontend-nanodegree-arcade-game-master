@@ -51,7 +51,7 @@ var Player = function() {
   this.x = 200;
   this.y = 380; 
 
-  this.sprite = "images/char-boy.png";
+  this.sprite = "images/char-horn-girl.png";
   
 };
 
