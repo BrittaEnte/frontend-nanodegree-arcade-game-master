@@ -5,7 +5,7 @@ var Enemy = function(x,y,speed) {
     this.x = x;
     this.y = y;
     
-    this.speed = Math.floor((Math.random()*70)); 
+    this.speed = Math.floor((Math.random()*170)); 
 
 
     // The image/sprite for our enemies, this uses
@@ -29,9 +29,12 @@ Enemy.prototype.update = function(dt) {
     }
 
 // collision with player, player goes back. 
-    if (this.x===player.x){
-      player.x = 200;
-      player.y = 380; 
+    if (this.x >= player.x -20 && this.x <= player.x + 20) {
+      if (this.y >= player.y -20 && this.y <= player.y +20){
+         alert('LOSER!, TRY AGAIN');
+         player.x = 200;
+         player.y = 380; 
+    }
     }
 };
 
@@ -47,6 +50,7 @@ Enemy.prototype.render = function() {
 var Player = function() {
   this.x = 200;
   this.y = 380; 
+
   this.sprite = "images/char-boy.png";
   
 };
@@ -59,8 +63,7 @@ Player.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.    
-  
-    this.x += this.speed * dt; 
+
 };
 
     // defines how player moves around the grid
@@ -71,33 +74,35 @@ Player.prototype.handleInput = function(allowedKeys) {
   // player arrow left
   case 'left':
    if (this.x > 0) {
-      this.x +=100;
+      this.x -=100;
    }
    break;
   // player arrow up
   case 'down':
-   if (this.y > 0) {
-      this.y -=100;
+   if (this.y < 350) {
+      this.y +=80;
    }
    break;
   // player arrow right
   case 'right':
-   if (this.x < 500) {
-      this.x -=100;
+   if (this.x < 400) {
+      this.x +=100;
    }
    break;
   // player arrow down
   case 'up':
-   if (this.y < 600) {
-      this.y +=100;
+   if (this.y > 0) {
+      this.y -=80;
    }
    break;
 
   default:
     alert("use the keys, right,left,up and down");
   }
-  if (this.y > 550){
-    player();
+  if (this.y < 0){
+    alert('WINNER!, TRY AGAIN');
+    this.x= 200;
+    this.y = 380;
   }
 
 };
@@ -106,7 +111,7 @@ Player.prototype.handleInput = function(allowedKeys) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [new Enemy(0, 60), new Enemy(0, 145), new Enemy(0, 230)];
+var allEnemies = [new Enemy(0, 60), new Enemy(0, 145), new Enemy(0, 230), new Enemy(100,60)];
 var player = new Player();
 
 
